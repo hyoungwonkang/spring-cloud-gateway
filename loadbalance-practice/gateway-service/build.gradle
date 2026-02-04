@@ -1,0 +1,7 @@
+dependencies {
+  // Spring Cloud Gateway Webflux
+  implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux'
+
+  // Spring Cloud Starter Netflix Eureka Client
+  implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+}
