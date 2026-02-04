@@ -1,0 +1,19 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: product-service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}  # 대시보드에서 확인 가능
+
+# instance-id
+# 여러 product-service 실행 시 이들을 서로 구분하기 위한 고유의 ID
+# 스프링 표현식(SpEL) 활용
+# ${spring.application.name} -> product-service
+# ${spring.application.instance_id:${random.value}} -> spring.application.instance_id 값(보통 Docker나 K8s 환경에서 부여함)을 사용하거나, 없으면 ${ramdom.value} 사용   
