@@ -14,19 +14,10 @@ spring:
             - Path=/payments/**
 
           filters:
-
+            - name: VerificationGatewayFilterFactory 
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: gateway, health
-  endpoint:
-    gateway:
-      access: read-only

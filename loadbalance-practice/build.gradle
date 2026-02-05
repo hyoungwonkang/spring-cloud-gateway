@@ -4,26 +4,61 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
-description = 'Demo project for Spring Boot'
+allprojects {
+	group = 'com.example'
+	version = '0.0.1-SNAPSHOT'
+	description = 'Demo project for Spring Boot'
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+	repositories {
+		mavenCentral()
 	}
 }
 
-repositories {
-	mavenCentral()
-}
+subprojects {
+	apply plugin: 'java-library'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'org.springframework.boot'
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(17)
+		}
+	}
 
-tasks.named('test') {
-	useJUnitPlatform()
+	configurations {
+		compileOnly {
+		extendsFrom annotationProcessor
+		}
+	}
+
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter'
+		
+		// Spring Boot Starter Actuator
+		implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+		// Lombok
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		
+		// Spring Configuration Processor
+		annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+		
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	}
+
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
+	
+	// Spring Cloud BOM: 변수로 버전 관리
+	ext {
+		set('SpringCloudVersion', '2025.0.0')
+	}
+	dependencyManagement {
+		imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${SpringCloudVersion}"
+		}
+	}
 }
